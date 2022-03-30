@@ -9,6 +9,7 @@ import RequestsTable from "./Table";
 function App() {
   const mapRef = useRef<L.Map>(null);
   console.log("render App");
+
   const onMapContainerResize = useCallback(() => {
     mapRef.current?.invalidateSize();
   }, []);
