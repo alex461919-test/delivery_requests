@@ -12,7 +12,7 @@
 
 ## Сборка и запуск
 
-Стандартный набор скриптов `npm start` , `npm run build`.
+Стандартный набор скриптов `npm run start` , `npm run build`.
 
 Рабочая сборка на githup https://alex461919-test.github.io/delivery_requests/ .
 
