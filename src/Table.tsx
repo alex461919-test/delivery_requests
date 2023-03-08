@@ -1,7 +1,16 @@
 import { Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { TableRowSelection } from "antd/lib/table/interface";
 import { useMemo } from "react";
-import { IPoint, IRequest, setGroupVisible, updatePoints, useAppDispatch, usePointsList, useRequestList } from "./store";
+import {
+  IPoint,
+  IRequest,
+  setGroupVisible,
+  updatePoints,
+  useAppDispatch,
+  usePointsList,
+  useRequestList,
+} from "./store";
 
 const RequestsTable: React.FC = () => {
   const requestsList = useRequestList();
@@ -28,7 +37,15 @@ const RequestsTable: React.FC = () => {
               bordered={false}
               className="ant-point-select"
               size="small"
-              onChange={(value) => dispath(updatePoints({ requestKey: record.key, startKey: value, endKey: record.end.key }))}
+              onChange={(value) =>
+                dispath(
+                  updatePoints({
+                    requestKey: record.key,
+                    startKey: value,
+                    endKey: record.end.key,
+                  })
+                )
+              }
             >
               {pointsList
                 .filter((item) => record.end.key !== item.key)
@@ -53,7 +70,15 @@ const RequestsTable: React.FC = () => {
               bordered={false}
               className="ant-point-select"
               size="small"
-              onChange={(value) => dispath(updatePoints({ requestKey: record.key, startKey: record.start.key, endKey: value }))}
+              onChange={(value) =>
+                dispath(
+                  updatePoints({
+                    requestKey: record.key,
+                    startKey: record.start.key,
+                    endKey: value,
+                  })
+                )
+              }
             >
               {pointsList
                 .filter((item) => record.start.key !== item.key)
@@ -70,22 +95,22 @@ const RequestsTable: React.FC = () => {
     [dispath, pointsList]
   );
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: IRequest[]) => {
-      dispath(setGroupVisible({ keys: selectedRowKeys }));
-    },
-  };
+  const rowSelection = useMemo<TableRowSelection<IRequest>>(
+    () => ({
+      type: "checkbox",
+      onChange: (selectedRowKeys: React.Key[], selectedRows: IRequest[]) => {
+        dispath(setGroupVisible({ keys: selectedRowKeys }));
+      },
+    }),
+    [dispath]
+  );
 
   return (
     <Table
-      columns={columns}
+      {...{ columns, rowSelection }}
       dataSource={requestsList}
       size="small"
       pagination={false}
-      rowSelection={{
-        type: "checkbox",
-        ...rowSelection,
-      }}
     />
   );
 };
